@@ -1,0 +1,44 @@
+{# store which show all products page #}
+
+{# load static into the template and then add the link with the dynamic path. #}
+
+{% extends 'store/main.html' %}
+{% load static %}
+
+{% block content %}
+    <h1><strong>Store</strong></h1>
+
+    {% comment %} 
+        - max screen row width is 12 in total, 
+        xs = extra small screens (mobile phones)
+        sm = small screens (tablets)
+        md = medium screens (some desktops)
+        lg = large screens (remaining desktops) 
+        but main focus for now is lg
+        - add image before product info
+        - add box-element and product style from main.css for the info box
+        - bootstrap color is light->white, dark->black, warning->yellow, primary->blue, secondary->grey, success->green
+        - btn-success->button bg color green, text white; btn-outline-success->button outline and text green, bg color white
+    {% endcomment %}
+
+    <div class="row">
+        {% for product in products %}
+        <div class="col-lg-3">
+            <img class="thumbnail" src="{{product.imageURL}}">
+            <div class="box-element product">
+                <h6>{{product.name}}</h6>
+                <hr>
+
+                <button class="btn btn-outline-warning add-btn">Add to cart</button>
+                <a class="btn btn-outline-primary" href="#">View product</a>
+                <h5 style="display: inline-block; float: right; color: red">
+                ${{product.price|floatformat:2}}</h5>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+{% endblock content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+<img src="{% static 'images/cart_logo.png' %}">
