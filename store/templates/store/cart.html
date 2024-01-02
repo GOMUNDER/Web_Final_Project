@@ -7,11 +7,6 @@
 {% block content %}
     <h1><strong>Cart</strong></h1>
 
-    {% comment %} 
-        - style="flex: "->to make space between text according to flex number, the bigger the farther
-
-    {% endcomment %}
-
     <div class="row">
         <div class="col-lg-12">
             <div class="box-element">
@@ -63,4 +58,10 @@
     </div>
 {% endblock content %}
 
-
+{% comment %} 
+- style="flex: "->to make space between text according to flex number, the bigger the farther
+- line 12: make a box to include all the element in cart
+- line 13: go back to store(homepage) when clicked
+- line 21: go to checkout page if already make sure no information are wrong
+- line 28-56: show cart item information 
+{% endcomment %}

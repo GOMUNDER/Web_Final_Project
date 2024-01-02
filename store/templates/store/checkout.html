@@ -7,8 +7,9 @@
 
     
     {% comment %} 
-        - btn-block to make button a large size button
+        - btn-block to make button a large size button from start to end width
         - Payment info is hidden until user login
+        - line 17-67: get user information (not finished)
 
     {% endcomment %}
 
@@ -59,12 +60,14 @@
                 <div class="box-element hidden" id="payment-info">
                     <small>Paypal Options</small>
                 </div>
-
             </div>
-
-            
         </div>
 
+        {% comment %} 
+            line 74: back to cart which show items added to cart
+            line 79-96: show item info again in checkkout page
+
+        {% endcomment %}
         
 		<div class="col-lg-6">
 			<div class="box-element">

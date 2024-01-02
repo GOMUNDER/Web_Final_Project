@@ -1,22 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-''' 
-- OneToOne mean every letter capitalized, user can only have one customer and visa versa
-- on_delete=models.CASCADE will delete user if the user item is deleted
 
-- on_delete==models.SET_NULL mean if a customer is deleted, the order wouldn't be deleted just set to null
-  so a customer can have many order
-
-- if complete is false mean the cart is still open so u can add product but if complete=true, we need to add order to new cart
-
-- in OrderItem, its many to one relationship, order is the cart, order item is item in the cart, cart can have may order item
-- single order can have multiple order item
-
-- in ShippingAddress, attach customer by set to models.SET_NULL for some reason if the order get deleted, customer still have the shipping address
-
-'''
+# class Customer include customer information after login
+# OneToOne mean every letter capitalized, user can only have one customer and visa versa
+# on_delete=models.CASCADE will delete customer if the user is deleted
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100, null=True)
@@ -44,6 +32,10 @@ class Product(models.Model):
             url = ''
         return url
 
+
+# on_delete==models.SET_NULL mean if a customer is deleted, the order wouldn't be deleted just set to null
+# so a customer can have many order
+# if complete is false mean the cart is still open so u can add product but if complete=true, we need to add order to new cart
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
     date_ordered = models.DateTimeField(auto_now_add=False)
@@ -60,24 +52,28 @@ class Order(models.Model):
         total = sum([item.get_total for item in orderitems])
         return total
     
-    # 
+    # calculate and get total items in cart
     @property 
     def get_cart_items(self):
         orderitems = self.orderitem_set.all()
         total = sum([item.quantity for item in orderitems])
         return total
     
+# in OrderItem, its many to one relationship, order is the cart, order item is item in the cart, cart can have may order item
+# single order can have multiple order item
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
+    # calculate and get total price for all item
     @property
     def get_total(self):
         total=self.product.price * self.quantity
         return total
-    
+
+# in ShippingAddress, attach customer by set to models.SET_NULL for some reason if the order get deleted, customer still have the shipping address
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True)
